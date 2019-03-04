@@ -1,6 +1,7 @@
 {
   "name": "gameofconway",
   "version": "0.1.0",
+  "homepage": "/react-game-of-life",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.9.2",
