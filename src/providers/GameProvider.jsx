@@ -1,5 +1,5 @@
 import React, {Component, createContext} from 'react';
-import {getCellSize, getBoardWidth} from '../style/sizes';
+import {getCellSize, getBoardWidth} from 'style/sizes';
 
 /**
  * Game context.
