@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
-import {GameContext} from 'providers/GameProvider';
+import { GameContext } from 'providers/GameProvider';
 
 const styles = theme => ({
   cellSize: {
@@ -22,7 +22,7 @@ const styles = theme => ({
 
 class Cell extends Component {
   render() {
-    const {alive, classes, posX, posY} = this.props;
+    const { alive, classes, posX, posY } = this.props;
     return (<GameContext.Consumer>
       {
         (context) => <div style={{
@@ -37,4 +37,4 @@ class Cell extends Component {
   }
 }
 
-export default withStyles(styles, {withTheme: true})(Cell);
+export default withStyles(styles, { withTheme: true })(Cell);

@@ -1,5 +1,5 @@
-import React, {Component, createContext} from 'react';
-import {getCellSize, getBoardWidth} from 'style/sizes';
+import React, { Component, createContext } from 'react';
+import { getCellSize, getBoardWidth } from 'style/sizes';
 
 /**
  * Game context.
@@ -26,6 +26,7 @@ const createGameState = (boardSize) => {
  * @function
  */
 const isAlive = (i, j, gameState, boardSize) => {
+  const isAlive = gameState[i][j];
   const rows = [
     i - 1,
     i,
@@ -49,7 +50,7 @@ const isAlive = (i, j, gameState, boardSize) => {
       }
     });
   });
-  return aliveAdjacents === 3;
+  return (!isAlive && aliveAdjacents === 3) || (isAlive && (aliveAdjacents === 2 || aliveAdjacents === 3));
 };
 
 /**
@@ -72,27 +73,27 @@ class GameProvider extends Component {
     super(props);
     this.state = {
       boardSize: props.boardSize,
-      gameState: createGameState(props.boardSize)
+      gameState: createGameState(props.boardSize),
+      isRunning: false,
     }
   }
 
   randomGame = () => {
-    const {gameState} = this.state;
-
+    const { gameState } = this.state;
     const newGameState = gameState.map(row => row.map(element => {
       const el = [true, false];
       return el[Math.floor(Math.random() * 2)]
     }));
-
     this.setGameState(newGameState);
   };
 
   nextGameState = () => {
-    setTimeout(() => {
-      const {gameState, boardSize} = this.state;
+    this.timeout = setTimeout(() => {
+      const { gameState, boardSize } = this.state;
       const nextGameState = getNextState(gameState, boardSize);
       this.setState({
         ...this.state,
+        isRunning: true,
         gameState: nextGameState
       }, this.nextGameState);
     }, 200);
@@ -100,6 +101,17 @@ class GameProvider extends Component {
 
   play = () => {
     this.nextGameState();
+  };
+
+  stop = () => {
+    clearTimeout(this.timeout);
+    this.setState({
+      isRunning: false,
+    });
+  }
+
+  clear = () => {
+    this.setGameState(createGameState(this.state.boardSize));
   };
 
   setGameState = (gameState) => {
@@ -111,7 +123,7 @@ class GameProvider extends Component {
   };
 
   editGameState = (i, j, boolean) => {
-    const {gameState} = this.state;
+    const { gameState } = this.state;
 
     gameState[i][j] = !boolean;
 
@@ -121,26 +133,18 @@ class GameProvider extends Component {
     });
   };
 
-  nextState = () => {
-    const {gameState, boardSize} = this.state;
-
-    this.setState({
-      ...this.state,
-      gameState: getNextState(gameState, boardSize)
-    });
-  };
-
   render() {
     return (<GameContext.Provider value={{
-        boardSize: this.props.boardSize,
-        gameState: this.state.gameState,
-        nextState: this.nextState,
         editGameState: this.editGameState,
-        cellSize: getCellSize(this.props.boardSize, 0.9),
-        boardWidth: getBoardWidth(this.props.boardSize, 0.9),
         play: this.play,
         stop: this.stop,
-        randomGame: this.randomGame
+        clear: this.clear,
+        randomGame: this.randomGame,
+        cellSize: getCellSize(this.props.boardSize, 0.7),
+        boardWidth: getBoardWidth(this.props.boardSize, 0.7),
+        boardSize: this.props.boardSize,
+        gameState: this.state.gameState,
+        isRunning: this.state.isRunning,
       }}>
       {this.props.children}
     </GameContext.Provider>);
