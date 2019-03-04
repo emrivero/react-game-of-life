@@ -1,5 +1,5 @@
-import React, { Component, createContext } from 'react';
-import { getCellSize, getBoardWidth } from '../style/sizes';
+import React, {Component, createContext} from 'react';
+import {getCellSize, getBoardWidth} from '../style/sizes';
 
 /**
  * Game context.
@@ -26,8 +26,16 @@ const createGameState = (boardSize) => {
  * @function
  */
 const isAlive = (i, j, gameState, boardSize) => {
-  const rows = [i - 1, i, i + 1].filter(element => element >= 0 && element < boardSize);
-  const cols = [j - 1, j, j + 1].filter(element => element >= 0 && element < boardSize);
+  const rows = [
+    i - 1,
+    i,
+    i + 1
+  ].filter(element => element >= 0 && element < boardSize);
+  const cols = [
+    j - 1,
+    j,
+    j + 1
+  ].filter(element => element >= 0 && element < boardSize);
   let aliveAdjacents = 0;
 
   rows.forEach(x => {
@@ -69,7 +77,7 @@ class GameProvider extends Component {
   }
 
   randomGame = () => {
-    const { gameState, boardSize } = this.state;
+    const {gameState} = this.state;
 
     const newGameState = gameState.map(row => row.map(element => {
       const el = [true, false];
@@ -81,7 +89,7 @@ class GameProvider extends Component {
 
   nextGameState = () => {
     setTimeout(() => {
-      const { gameState, boardSize } = this.state;
+      const {gameState, boardSize} = this.state;
       const nextGameState = getNextState(gameState, boardSize);
       this.setState({
         ...this.state,
@@ -103,7 +111,7 @@ class GameProvider extends Component {
   };
 
   editGameState = (i, j, boolean) => {
-    const { gameState } = this.state;
+    const {gameState} = this.state;
 
     gameState[i][j] = !boolean;
 
@@ -114,28 +122,28 @@ class GameProvider extends Component {
   };
 
   nextState = () => {
-    const { gameState, boardSize } = this.state;
+    const {gameState, boardSize} = this.state;
 
     this.setState({
       ...this.state,
-      gameState: getNextState(gameState, boardSize),
+      gameState: getNextState(gameState, boardSize)
     });
   };
 
   render() {
     return (<GameContext.Provider value={{
-          boardSize: this.props.boardSize,
-          gameState: this.state.gameState,
-          nextState: this.nextState,
-          editGameState: this.editGameState,
-          cellSize: getCellSize(this.props.boardSize, 0.9),
-          boardWidth: getBoardWidth(this.props.boardSize, 0.9),
-          play: this.play,
-          stop: this.stop,
-          randomGame: this.randomGame
-        }}>
-        {this.props.children}
-      </GameContext.Provider>);
+        boardSize: this.props.boardSize,
+        gameState: this.state.gameState,
+        nextState: this.nextState,
+        editGameState: this.editGameState,
+        cellSize: getCellSize(this.props.boardSize, 0.9),
+        boardWidth: getBoardWidth(this.props.boardSize, 0.9),
+        play: this.play,
+        stop: this.stop,
+        randomGame: this.randomGame
+      }}>
+      {this.props.children}
+    </GameContext.Provider>);
   }
 
 }
