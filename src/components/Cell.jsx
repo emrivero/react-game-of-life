@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import { GameContext } from 'providers/GameProvider';
@@ -16,11 +16,11 @@ const styles = theme => ({
     backgroundColor: '#eee'
   },
   alive: {
-    backgroundColor: '#f00'
+    backgroundColor: theme.palette.orange[400]
   }
 });
 
-class Cell extends Component {
+class Cell extends PureComponent {
   render() {
     const { alive, classes, posX, posY } = this.props;
     return (<GameContext.Consumer>

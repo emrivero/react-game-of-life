@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Board from 'components/Board';
 import Layout from 'components/Layout';
 import { withStyles } from '@material-ui/core/styles';
@@ -12,7 +12,7 @@ const styles = theme => ({
   main: {
     display: 'flex',
     flexDirection: 'column',
-    marginTop: '5%',
+    marginTop: '4%',
   },
   flex: {
     display: 'flex',
@@ -23,10 +23,10 @@ const styles = theme => ({
   }
 });
 
-class Main extends Component {
+class Main extends PureComponent {
   render() {
     const { classes } = this.props;
-    return (<GameProvider boardSize={40}>
+    return (<GameProvider numRows={40} numCols={60}>
       <Layout>
       <GameContext.Consumer>
         {

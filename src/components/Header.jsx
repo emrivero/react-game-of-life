@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import AppBar from '@material-ui/core/AppBar';
@@ -14,7 +14,7 @@ const styles = theme => ({
   }
 });
 
-class Header extends Component {
+class Header extends PureComponent {
   render() {
     const { classes } = this.props;
     return (

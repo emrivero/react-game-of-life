@@ -1,9 +1,14 @@
 /**
  * @function
  */
-export const getCellSize = (numberCells, marginHeight) => Math.round((window.innerHeight * marginHeight) / numberCells);
+export const cellSize = 20;
 
 /**
  * @function
  */
-export const getBoardWidth = (numberCells, marginHeight) => Math.round(getCellSize(numberCells, marginHeight) + 1) * numberCells;
+export const getBoardWidth = (numberCols) => Math.round(cellSize + 1) * numberCols;
+
+/**
+ * @function
+ */
+export const getBoardHeight = (numberRows) => Math.round(cellSize + 1) * numberRows;

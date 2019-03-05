@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react';
-import { getCellSize, getBoardWidth } from 'style/sizes';
+import { cellSize, getBoardWidth, getBoardHeight } from 'style/sizes';
 
 /**
  * Game context.
@@ -10,13 +10,13 @@ export const GameContext = createContext();
 /**
  * @function
  */
-const createGameState = (boardSize) => {
+const createGameState = (numRows, numCols) => {
   const gameState = [];
   const rowState = [];
-  for (let j = 0; j < boardSize; j += 1) {
+  for (let j = 0; j < numCols; j += 1) {
     rowState.push(false);
   }
-  for (let i = 0; i < boardSize; i += 1) {
+  for (let i = 0; i < numRows; i += 1) {
     gameState.push([...rowState]);
   }
   return gameState;
@@ -25,18 +25,18 @@ const createGameState = (boardSize) => {
 /**
  * @function
  */
-const isAlive = (i, j, gameState, boardSize) => {
+const isAlive = (i, j, gameState, n, m) => {
   const isAlive = gameState[i][j];
   const rows = [
     i - 1,
     i,
     i + 1
-  ].filter(element => element >= 0 && element < boardSize);
+  ].filter(element => element >= 0 && element < n);
   const cols = [
     j - 1,
     j,
     j + 1
-  ].filter(element => element >= 0 && element < boardSize);
+  ].filter(element => element >= 0 && element < m);
   let aliveAdjacents = 0;
 
   rows.forEach(x => {
@@ -56,10 +56,10 @@ const isAlive = (i, j, gameState, boardSize) => {
 /**
  * @function
  */
-const getNextState = (gameState, boardSize) => {
+const getNextState = (gameState, n, m) => {
   return gameState.map((rowState, i) => {
     return rowState.map((colState, j) => {
-      return isAlive(i, j, gameState, boardSize);
+      return isAlive(i, j, gameState, n, m);
     });
   });
 };
@@ -72,8 +72,9 @@ class GameProvider extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      boardSize: props.boardSize,
-      gameState: createGameState(props.boardSize),
+      numRows: props.numRows,
+      numCols: props.numCols,
+      gameState: createGameState(props.numRows, props.numCols),
       isRunning: false,
     }
   }
@@ -89,14 +90,14 @@ class GameProvider extends Component {
 
   nextGameState = () => {
     this.timeout = setTimeout(() => {
-      const { gameState, boardSize } = this.state;
-      const nextGameState = getNextState(gameState, boardSize);
+      const { gameState, numRows, numCols } = this.state;
+      const nextGameState = getNextState(gameState, numRows, numCols);
       this.setState({
         ...this.state,
         isRunning: true,
         gameState: nextGameState
       }, this.nextGameState);
-    }, 200);
+    }, 10);
   };
 
   play = () => {
@@ -111,7 +112,8 @@ class GameProvider extends Component {
   }
 
   clear = () => {
-    this.setGameState(createGameState(this.state.boardSize));
+    const { numRows, numCols } = this.state;
+    this.setGameState(createGameState(numRows, numCols));
   };
 
   setGameState = (gameState) => {
@@ -140,9 +142,9 @@ class GameProvider extends Component {
         stop: this.stop,
         clear: this.clear,
         randomGame: this.randomGame,
-        cellSize: getCellSize(this.props.boardSize, 0.7),
-        boardWidth: getBoardWidth(this.props.boardSize, 0.7),
-        boardSize: this.props.boardSize,
+        cellSize,
+        boardWidth: getBoardWidth(this.props.numCols, 0.7),
+        boardHeight: getBoardHeight(this.props.numRows, 0.7),
         gameState: this.state.gameState,
         isRunning: this.state.isRunning,
       }}>
