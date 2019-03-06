@@ -7,6 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import Stop from '@material-ui/icons/Stop';
 import Auto from '@material-ui/icons/Autorenew';
+import Delete from '@material-ui/icons/Delete';
 
 const styles = theme => ({
   main: {
@@ -23,10 +24,9 @@ const styles = theme => ({
   }
 });
 
-class Main extends PureComponent {
-  render() {
-    const { classes } = this.props;
-    return (<GameProvider numRows={40} numCols={60}>
+const Main = (props) => {
+  const { classes } = props;
+  return (<GameProvider numRows={40} numCols={70}>
       <Layout>
       <GameContext.Consumer>
         {
@@ -40,8 +40,11 @@ class Main extends PureComponent {
               <IconButton disabled={!context.isRunning} onClick={() => context.stop(context.idTimeout)}>
                 <Stop color={!context.isRunning ? "disabled" : "primary"}/>
               </IconButton>
-              <IconButton color="primary" onClick={context.randomGame}>
-                <Auto/>
+              <IconButton disabled={context.isRunning} color="primary" onClick={context.randomGame}>
+                <Auto color={context.isRunning ? "disabled" : "primary"}/>
+              </IconButton>
+              <IconButton disabled={context.isRunning} color="primary" onClick={context.clear}>
+                <Delete color={context.isRunning ? "disabled" : "primary"}/>
               </IconButton>
             </div>
               <div>
@@ -53,8 +56,7 @@ class Main extends PureComponent {
       </GameContext.Consumer>
     </Layout>
     </GameProvider>);
-  }
+};
 
-}
 
 export default withStyles(styles, { withTheme: true })(Main);

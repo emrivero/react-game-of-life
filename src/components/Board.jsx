@@ -12,10 +12,9 @@ const styles = theme => ({
   }
 });
 
-class Board extends PureComponent {
-  render() {
-    const { classes } = this.props;
-    return (<GameContext.Consumer>
+const Board = (props) => {
+  const { classes } = props;
+  return (<GameContext.Consumer>
       {
         (context) => <Fragment>
             <div className={classes.cellsContainer} style={{
@@ -27,7 +26,6 @@ class Board extends PureComponent {
           </Fragment>
       }
     </GameContext.Consumer>);
-  }
-}
+};
 
 export default withStyles(styles, { withTheme: true })(Board);

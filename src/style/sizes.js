@@ -1,14 +1,14 @@
 /**
  * @function
  */
-export const cellSize = 20;
+export const cellSize = (numberRows, numberCols) => 18;
 
 /**
  * @function
  */
-export const getBoardWidth = (numberCols) => Math.round(cellSize + 1) * numberCols;
+export const getBoardWidth = (numberCols, numberRows) => Math.round(cellSize(numberRows, numberCols) + 1) * numberCols;
 
 /**
  * @function
  */
-export const getBoardHeight = (numberRows) => Math.round(cellSize + 1) * numberRows;
+export const getBoardHeight = (numberRows, numberCols) => Math.round(cellSize(numberRows, numberCols) + 1) * numberRows;

@@ -1,16 +1,13 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import Header from 'components/Header';
 
-class Layout extends PureComponent {
-  render() {
-    return (
-      <Fragment>
+const Layout = (props) => {
+  return (
+    <Fragment>
         <Header/>
-        {this.props.children}
+        {props.children}
       </Fragment>
-    );
-  }
-
+  );
 }
 
 export default Layout;

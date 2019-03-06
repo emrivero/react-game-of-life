@@ -142,9 +142,9 @@ class GameProvider extends Component {
         stop: this.stop,
         clear: this.clear,
         randomGame: this.randomGame,
-        cellSize,
-        boardWidth: getBoardWidth(this.props.numCols, 0.7),
-        boardHeight: getBoardHeight(this.props.numRows, 0.7),
+        cellSize: cellSize(this.props.numRows, this.props.numberCols),
+        boardWidth: getBoardWidth(this.props.numCols, this.props.numRows),
+        boardHeight: getBoardHeight(this.props.numRows),
         gameState: this.state.gameState,
         isRunning: this.state.isRunning,
       }}>

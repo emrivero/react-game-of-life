@@ -20,10 +20,9 @@ const styles = theme => ({
   }
 });
 
-class Cell extends PureComponent {
-  render() {
-    const { alive, classes, posX, posY } = this.props;
-    return (<GameContext.Consumer>
+const Cell = (props) => {
+  const { alive, classes, posX, posY } = props;
+  return (<GameContext.Consumer>
       {
         (context) => <div style={{
               width: `${context.cellSize}px`,
@@ -34,7 +33,6 @@ class Cell extends PureComponent {
               : classes.dead)}></div>
       }
     </GameContext.Consumer>);
-  }
-}
+};
 
 export default withStyles(styles, { withTheme: true })(Cell);

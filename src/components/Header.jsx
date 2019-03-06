@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import AppBar from '@material-ui/core/AppBar';
@@ -14,17 +14,15 @@ const styles = theme => ({
   }
 });
 
-class Header extends PureComponent {
-  render() {
-    const { classes } = this.props;
-    return (
-      <AppBar className={classNames(classes.height)}>
+const Header = (props) => {
+  const { classes } = props;
+  return (
+    <AppBar className={classNames(classes.height)}>
         <Typography className={classNames(classes.font)} variant="h4" align="center" color="secondary">
           Game of Life
         </Typography>
       </AppBar>
-    );
-  }
-}
+  );
+};
 
 export default withStyles(styles, { theme: true })(Header);
