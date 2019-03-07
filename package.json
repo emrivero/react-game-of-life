@@ -1,6 +1,6 @@
 {
   "name": "gameofconway",
-  "version": "0.1.0",
+  "version": "1.6.0",
   "homepage": "/react-game-of-life",
   "private": true,
   "dependencies": {
