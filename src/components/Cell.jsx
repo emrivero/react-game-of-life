@@ -1,19 +1,18 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import { GameContext } from 'providers/GameProvider';
 
 const styles = theme => ({
-  cellSize: {
-    height: '44px',
-    width: '44px'
-  },
   border: {
     borderTop: '1px solid black',
     borderLeft: '1px solid black'
   },
   dead: {
-    backgroundColor: '#eee'
+    backgroundColor: '#eee',
+    '&:hover': {
+      backgroundColor: theme.palette.orange[200],
+    }
   },
   alive: {
     backgroundColor: theme.palette.orange[400]

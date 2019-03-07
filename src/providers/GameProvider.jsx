@@ -65,6 +65,13 @@ const getNextState = (gameState, n, m) => {
 };
 
 /**
+ * @function
+ */
+const getPopulation = (gameState) => {
+  return gameState.reduce((current, next) => current + next.filter(e => e === true).length, 0);
+};
+
+/**
  * @class
  */
 class GameProvider extends Component {
@@ -73,6 +80,8 @@ class GameProvider extends Component {
     super(props);
     this.state = {
       numRows: props.numRows,
+      generation: 0,
+      population: 0,
       numCols: props.numCols,
       gameState: createGameState(props.numRows, props.numCols),
       isRunning: false,
@@ -94,10 +103,23 @@ class GameProvider extends Component {
       const nextGameState = getNextState(gameState, numRows, numCols);
       this.setState({
         ...this.state,
+        generation: this.state.generation + 1,
+        population: getPopulation(nextGameState),
         isRunning: true,
         gameState: nextGameState
       }, this.nextGameState);
     }, 10);
+  };
+
+  next = () => {
+    const { gameState, numRows, numCols } = this.state;
+    const nextGameState = getNextState(gameState, numRows, numCols);
+    this.setState({
+      ...this.state,
+      population: getPopulation(nextGameState),
+      generation: this.state.generation + 1,
+      gameState: nextGameState
+    });
   };
 
   play = () => {
@@ -113,12 +135,15 @@ class GameProvider extends Component {
 
   clear = () => {
     const { numRows, numCols } = this.state;
-    this.setGameState(createGameState(numRows, numCols));
+    this.setGameState(createGameState(numRows, numCols), 0);
   };
 
-  setGameState = (gameState) => {
+  setGameState = (gameState, generation = null) => {
+    const gen = generation === null ? this.state.generation : generation;
     this.setState({
       ...this.state,
+      generation: gen,
+      population: getPopulation(gameState),
       gameState
     });
     return gameState;
@@ -126,18 +151,14 @@ class GameProvider extends Component {
 
   editGameState = (i, j, boolean) => {
     const { gameState } = this.state;
-
     gameState[i][j] = !boolean;
-
-    this.setState({
-      ...this.state,
-      gameState
-    });
+    this.setGameState(gameState);
   };
 
   render() {
     return (<GameContext.Provider value={{
         editGameState: this.editGameState,
+        next: this.next,
         play: this.play,
         stop: this.stop,
         clear: this.clear,
@@ -147,6 +168,8 @@ class GameProvider extends Component {
         boardHeight: getBoardHeight(this.props.numRows),
         gameState: this.state.gameState,
         isRunning: this.state.isRunning,
+        generation: this.state.generation,
+        population: this.state.population
       }}>
       {this.props.children}
     </GameContext.Provider>);
