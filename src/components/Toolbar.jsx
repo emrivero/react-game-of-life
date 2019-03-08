@@ -7,10 +7,18 @@ import Stop from '@material-ui/icons/Stop';
 import Auto from '@material-ui/icons/Autorenew';
 import Delete from '@material-ui/icons/Delete';
 import SkipNext from '@material-ui/icons/SkipNext';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import classNames from 'classnames';
 
-const styles = theme => ({});
+const styles = theme => ({
+  itemSpeed: {
+    color: theme.palette.primary.main
+  }
+});
 
 const Toolbar = (props) => {
+  const { classes } = props;
   return (<GameContext.Consumer>
       {
         (context) => <div>
@@ -29,6 +37,19 @@ const Toolbar = (props) => {
         <IconButton disabled={context.isRunning} color="primary" onClick={context.clear}>
           <Delete color={context.isRunning ? "disabled" : "primary"}/>
         </IconButton>
+        <Select
+            className={classNames(classes.itemSpeed)}
+            value={context.speed}
+            onChange={context.editSpeed}
+            inputProps={{
+              id: 'game-speed',
+            }}
+          >
+            <MenuItem  value={2000}>0.5x</MenuItem>
+            <MenuItem  value={1000}>1x</MenuItem>
+            <MenuItem  value={300}>1.5x</MenuItem>
+            <MenuItem  value={50}>2x</MenuItem>
+          </Select>
       </div>
       }
     </GameContext.Consumer>);

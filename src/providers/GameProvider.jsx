@@ -85,6 +85,7 @@ class GameProvider extends Component {
       numCols: props.numCols,
       gameState: createGameState(props.numRows, props.numCols),
       isRunning: false,
+      speed: 1000
     }
   }
 
@@ -98,8 +99,8 @@ class GameProvider extends Component {
   };
 
   nextGameState = () => {
+    const { gameState, numRows, numCols, speed: { value } } = this.state;
     this.timeout = setTimeout(() => {
-      const { gameState, numRows, numCols } = this.state;
       const nextGameState = getNextState(gameState, numRows, numCols);
       this.setState({
         ...this.state,
@@ -108,7 +109,7 @@ class GameProvider extends Component {
         isRunning: true,
         gameState: nextGameState
       }, this.nextGameState);
-    }, 10);
+    }, value);
   };
 
   next = () => {
@@ -155,6 +156,13 @@ class GameProvider extends Component {
     this.setGameState(gameState);
   };
 
+  editSpeed = (evt) => {
+    this.setState({
+      ...this.state,
+      speed: evt.target.value
+    });
+  };
+
   render() {
     return (<GameContext.Provider value={{
         editGameState: this.editGameState,
@@ -162,6 +170,8 @@ class GameProvider extends Component {
         play: this.play,
         stop: this.stop,
         clear: this.clear,
+        speed: this.state.speed,
+        editSpeed: this.editSpeed,
         randomGame: this.randomGame,
         cellSize: cellSize(this.props.numRows, this.props.numberCols),
         boardWidth: getBoardWidth(this.props.numCols, this.props.numRows),
